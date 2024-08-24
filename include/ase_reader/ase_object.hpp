@@ -19,7 +19,7 @@ class ASEObjectException : public ASEException {
 template <typename T = float>
 class ASEObject {
  public:
-  using ASEMesh = ASEMesh<T>;
+  using Mesh = ASEMesh<T>;
 
   constexpr static auto HEADER = "*GEOMOBJECT";
 
@@ -58,7 +58,7 @@ class ASEObject {
 
  private:
   std::string _name;
-  ASEMesh _mesh{};
+  Mesh _mesh{};
 
  private:
   static auto moveToHeader(std::ifstream &is) -> void {
@@ -93,8 +93,8 @@ class ASEObject {
     throw ASEObjectException{ss.str()};
   }
 
-  static auto readMesh(std::ifstream &is) -> ASEMesh {
-    ASEMesh mesh;
+  static auto readMesh(std::ifstream &is) -> Mesh {
+    Mesh mesh;
     mesh.read(is);
     return mesh;
   }

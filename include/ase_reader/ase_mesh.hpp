@@ -22,8 +22,8 @@ class ASEMeshException : public ASEException {
 template <typename Index = std::size_t, typename T = float>
 class ASEMesh {
  public:
-  using Vertex = Vertex<T>;
-  using Face = Face<Index>;
+  using V = Vertex<T>;
+  using F = Face<Index>;
 
   static constexpr auto MESH_HEADER = std::string_view{"*MESH"};
   static constexpr auto MESH_NUMVERTEX_HEADER =
@@ -117,8 +117,8 @@ class ASEMesh {
 
   std::size_t _num_vertices{};
   std::size_t _num_faces{};
-  std::vector<Vertex> _vertices{};
-  std::vector<Face> _faces{};
+  std::vector<V> _vertices{};
+  std::vector<F> _faces{};
 
  private:
   static auto moveToMeshHeader(std::istream &is) -> void {
@@ -181,7 +181,7 @@ class ASEMesh {
     throw ASEMeshException(ss.str());
   }
 
-  static auto readMeshVerticesList(std::istream &is) -> std::vector<Vertex> {
+  static auto readMeshVerticesList(std::istream &is) -> std::vector<V> {
     std::string line;
 
     while (std::getline(is, line)) {
@@ -196,7 +196,7 @@ class ASEMesh {
       ss << "Can't find header: " << MESH_VERTEX_LIST_HEADER;
     }
 
-    std::vector<Vertex> vertex{};
+    std::vector<V> vertex{};
 
     while (std::getline(is, line)) {
       std::stringstream ss;
@@ -208,7 +208,7 @@ class ASEMesh {
         break;
       }
 
-      Vertex v;
+      V v;
       ss >> v;
 
       vertex.emplace_back(v);
@@ -217,7 +217,7 @@ class ASEMesh {
     return vertex;
   }
 
-  static auto readMeshFaceList(std::istream &is) -> std::vector<Face> {
+  static auto readMeshFaceList(std::istream &is) -> std::vector<F> {
     std::string line;
     while (std::getline(is, line)) {
       if (line.find(MESH_FACE_LIST_HEADER) != std::string::npos) {
@@ -231,7 +231,7 @@ class ASEMesh {
       ss << "Can't find header: " << MESH_FACE_LIST_HEADER;
     }
 
-    std::vector<Face> faces{};
+    std::vector<F> faces{};
 
     while (std::getline(is, line)) {
       std::stringstream ss;
@@ -243,7 +243,7 @@ class ASEMesh {
         break;
       }
 
-      Face f;
+      F f;
       ss >> f;
 
       faces.emplace_back(f);
@@ -259,14 +259,14 @@ class ASEMesh {
   }
 
   static auto saveElements(std::ostream &os,
-                           const std::vector<Face> &faces) -> void {
+                           const std::vector<F> &faces) -> void {
     for (const auto &f : faces) {
       os << (f.v1()) << " " << (f.v2()) << " " << (f.v3()) << "\n";
     }
   }
 
   static auto saveVertices(std::ostream &os,
-                           const std::vector<Vertex> &vertices) -> void {
+                           const std::vector<V> &vertices) -> void {
     for (const auto &v : vertices) {
       os << v.x() << " " << v.y() << " " << v.z() << "\n";
     }

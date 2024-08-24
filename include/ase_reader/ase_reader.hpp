@@ -4,6 +4,7 @@
 #include <ase_reader/ase_exception.hpp>
 #include <ase_reader/ase_object.hpp>
 #include <cstddef>
+#include <filesystem>
 #include <fstream>
 #include <ostream>
 #include <sstream>
@@ -20,8 +21,8 @@ class ASEReaderException : public ASEException {
 template <typename T = float>
 class ASEReader {
  public:
-  using ASEObject = ASEObject<T>;
-  using ASEMesh = typename ASEObject::ASEMesh;
+  using Object = ASEObject<T>;
+  using Mesh = typename Object::Mesh;
 
  public:
   auto precision() const { return _precision; }
@@ -71,7 +72,7 @@ class ASEReader {
   }
 
   auto write(std::ostream &info_os, std::ostream &vertices_os,
-            std::ostream &elements_os) const -> void {
+             std::ostream &elements_os) const -> void {
     std::size_t num_vertices = 0;
     std::size_t num_faces = 0;
 
@@ -110,13 +111,13 @@ class ASEReader {
   static auto moveToHeader(__attribute__((unused)) std::ifstream &is) -> void {
   };
 
-  static auto readOject(std::ifstream &is) -> std::vector<ASEObject> {
+  static auto readOject(std::ifstream &is) -> std::vector<Object> {
     moveToHeader(is);
-    auto objects = std::vector<ASEObject>{};
+    auto objects = std::vector<Object>{};
 
     try {
       while (!is.eof()) {
-        auto object = ASEObject{};
+        auto object = Object{};
         object.read(is);
         objects.emplace_back(object);
       }
@@ -138,7 +139,7 @@ class ASEReader {
 
  private:
   int _precision{4};
-  std::vector<ASEObject> _objects{};
+  std::vector<Object> _objects{};
 };
 
 }  // namespace ase_reader
