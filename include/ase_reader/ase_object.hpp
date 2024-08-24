@@ -51,15 +51,9 @@ class ASEObject {
     _mesh = readMesh(is);
   }
 
-  auto saveToDir(std::string_view dir,
-                 ASEMesh::FileMode mode = ASEMesh::FileMode::OVERWRITE,
-                 std::size_t offset = 0) const -> void {
-    _mesh.saveToDir(dir, mode, offset);
-  }
-
-  auto save(std::ostream &info_os, std::ostream &vertices_os,
+  auto write(std::ostream &info_os, std::ostream &vertices_os,
             std::ostream &elements_os) const -> void {
-    _mesh.save(info_os, vertices_os, elements_os);
+    _mesh.write(info_os, vertices_os, elements_os);
   }
 
  private:

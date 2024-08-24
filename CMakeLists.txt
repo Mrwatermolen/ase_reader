@@ -24,7 +24,7 @@ set(ASE_READER_PUBLIC_INCLUDE_DIR include)
 add_library(ase_reader INTERFACE)
 target_include_directories(ase_reader INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${ASE_READER_PUBLIC_INCLUDE_DIR}>
-  $<INSTALL_INTERFACE:${ASE_READER_PUBLIC_INCLUDE_DIR}>
+  $<INSTALL_INTERFACE:include>
 )
 
 add_subdirectory(src)

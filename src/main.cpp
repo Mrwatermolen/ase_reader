@@ -21,7 +21,7 @@ auto main(int argc, char** argv) -> int {
   // / "vertices.txt", std::ios::out}; auto elements_os = std::ofstream{save_dir
   // / "elements.txt", std::ios::out};
 
-  // ase.save(info_os, vertices_os, elements_os);
+  // ase.write(info_os, vertices_os, elements_os);
 
   // ase.save(save_dir.string());
   ase.setPrecision(6);
@@ -38,7 +38,7 @@ auto main(int argc, char** argv) -> int {
     auto elements_os =
         std::ofstream{save_dir / object.name() / "elements.txt", std::ios::out};
 
-    object.save(info_os, vertices_os, elements_os);
+    object.write(info_os, vertices_os, elements_os);
   }
 
   return 0;

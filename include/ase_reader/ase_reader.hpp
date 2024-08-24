@@ -67,10 +67,10 @@ class ASEReader {
     auto elements_os =
         std::ofstream{(dir_path / "elements.txt").string(), std::ios::out};
 
-    save(info_os, vertices_os, elements_os);
+    write(info_os, vertices_os, elements_os);
   }
 
-  auto save(std::ostream &info_os, std::ostream &vertices_os,
+  auto write(std::ostream &info_os, std::ostream &vertices_os,
             std::ostream &elements_os) const -> void {
     std::size_t num_vertices = 0;
     std::size_t num_faces = 0;
@@ -79,7 +79,7 @@ class ASEReader {
       std::stringstream obj_info_os;
       std::stringstream obj_vertices_os;
       std::stringstream obj_elements_os;
-      object.save(obj_info_os, obj_vertices_os, obj_elements_os);
+      object.write(obj_info_os, obj_vertices_os, obj_elements_os);
 
       vertices_os << obj_vertices_os.rdbuf();
 

@@ -37,8 +37,6 @@ class ASEMesh {
   static constexpr auto MESH_FACE_LIST_HEADER =
       std::string_view{"*MESH_FACE_LIST"};
 
-  enum FileMode { OVERWRITE, APPEND };
-
  public:
   auto numVertices() const { return _num_vertices; }
 
@@ -69,7 +67,7 @@ class ASEMesh {
     read(is);
   }
 
-  auto read(std::ifstream &is) -> void {
+  auto read(std::istream &is) -> void {
     moveToMeshHeader(is);
 
     if (is.eof()) {
@@ -106,7 +104,7 @@ class ASEMesh {
     }
   }
 
-  auto save(std::ostream &info_os, std::ostream &vertices_os,
+  auto write(std::ostream &info_os, std::ostream &vertices_os,
             std::ostream &elements_os) const -> void {
     saveInfo(info_os, _num_vertices, _num_faces);
     saveElements(elements_os, _faces);
@@ -123,7 +121,7 @@ class ASEMesh {
   std::vector<Face> _faces{};
 
  private:
-  static auto moveToMeshHeader(std::ifstream &is) -> void {
+  static auto moveToMeshHeader(std::istream &is) -> void {
     std::string line;
 
     while (std::getline(is, line)) {
@@ -135,7 +133,7 @@ class ASEMesh {
     }
   }
 
-  static auto readMeshNumVertices(std::ifstream &is) -> std::size_t {
+  static auto readMeshNumVertices(std::istream &is) -> std::size_t {
     std::string line;
 
     while (std::getline(is, line)) {
@@ -159,7 +157,7 @@ class ASEMesh {
     throw ASEMeshException(ss.str());
   }
 
-  static auto readMeshNumFaces(std::ifstream &is) -> std::size_t {
+  static auto readMeshNumFaces(std::istream &is) -> std::size_t {
     std::string line;
 
     while (std::getline(is, line)) {
@@ -183,7 +181,7 @@ class ASEMesh {
     throw ASEMeshException(ss.str());
   }
 
-  static auto readMeshVerticesList(std::ifstream &is) -> std::vector<Vertex> {
+  static auto readMeshVerticesList(std::istream &is) -> std::vector<Vertex> {
     std::string line;
 
     while (std::getline(is, line)) {
@@ -219,7 +217,7 @@ class ASEMesh {
     return vertex;
   }
 
-  static auto readMeshFaceList(std::ifstream &is) -> std::vector<Face> {
+  static auto readMeshFaceList(std::istream &is) -> std::vector<Face> {
     std::string line;
     while (std::getline(is, line)) {
       if (line.find(MESH_FACE_LIST_HEADER) != std::string::npos) {
