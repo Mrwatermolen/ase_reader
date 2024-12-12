@@ -108,8 +108,7 @@ class ASEReader {
   }
 
  private:
-  static auto moveToHeader(__attribute__((unused)) std::ifstream &is) -> void {
-  };
+  static auto moveToHeader([[maybe_unused]] std::ifstream &is) -> void {};
 
   static auto readOject(std::ifstream &is) -> std::vector<Object> {
     moveToHeader(is);
